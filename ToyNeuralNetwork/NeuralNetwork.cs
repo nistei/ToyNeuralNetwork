@@ -90,7 +90,7 @@ namespace ToyNeuralNetwork
 
         private double[] MatrixToArray(Matrix<double> outputMatrix)
         {
-            return outputMatrix.AsRowMajorArray();
+            return outputMatrix.AsColumnMajorArray();
         }
 
         private Matrix<double> CalculateLayer(Matrix<double> weight, Matrix<double> bias, Matrix<double> input)
@@ -120,7 +120,6 @@ namespace ToyNeuralNetwork
             {
                 output = CalculateLayer(Weigths[i], Biases[i], output);
             }
-
             return MatrixToArray(output);
 
 
