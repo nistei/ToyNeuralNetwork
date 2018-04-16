@@ -121,17 +121,11 @@ namespace ToyNeuralNetwork
                 output = CalculateLayer(Weigths[i], Biases[i], output);
             }
             return MatrixToArray(output);
+        }
 
-
-            //Matrix<double> hidden = Matrix.op_DotMultiply(WeigthsIH, input);
-            //hidden.Add(BiasH);
-            //hidden = hidden.Map(c => ActivationFunction.Function(c));
-            //
-            //Matrix<double> output = Matrix.op_DotMultiply(WeigthsHO, hidden);
-            //output.Add(BiasO);
-            //output.Map(c => ActivationFunction.Function(c));
-            //
-            //return output;
+        public void Train(DataPair pair)
+        {
+            Train(pair.Input, pair.Target);
         }
 
         public void Train(double[] inputArr, double[] targetArr)
@@ -158,49 +152,19 @@ namespace ToyNeuralNetwork
                 Matrix<double> previousError = Weigths[i - 1].Transpose().Multiply(error);
                 target = previousError.Add(layers[i - 1]);
             }
-
-
-            //Matrix<double> hidden = Matrix.op_DotMultiply(WeigthsIH, input);
-            //hidden.Add(BiasH);
-            //hidden = hidden.Map(c => ActivationFunction.Function(c));
-            //
-            //Matrix<double> output = Matrix.op_DotMultiply(WeigthsHO, hidden);
-            //output.Add(BiasO);
-            //output.Map(c => ActivationFunction.Function(c));
-            //
-            //Matrix<double> outputError = target.Subtract(output);
-            //
-            //Matrix<double> gradients = output.Map(c => ActivationFunction.DFunction(c));
-            //gradients.Multiply(outputError);
-            //gradients.Multiply(LearningRate);
-            //
-            //Matrix<double> hiddenTrans = hidden.Transpose();
-            //Matrix<double> weightHODelta = Matrix.op_DotMultiply(gradients, hiddenTrans);
-            //
-            //WeigthsHO.Add(weightHODelta);
-            //BiasO.Add(gradients);
-            //
-            //Matrix<double> weightHOTrans = hidden.Transpose();
-            //Matrix<double> hiddenError = Matrix.op_DotMultiply(weightHOTrans, outputError);
-            //
-            //Matrix<double> hiddenGradient = hidden.Map(c => ActivationFunction.DFunction(c));
-            //hiddenGradient.Multiply(hiddenError);
-            //hiddenGradient.Multiply(LearningRate);
-            //
-            //Matrix<double> inputTrans = input.Transpose();
-            //Matrix<double> weightIHDelta = Matrix.op_DotMultiply(hiddenGradient, inputTrans);
-            //
-            //WeigthsIH.Add(weightIHDelta);
-            //BiasH.Add(hiddenGradient);
-
         }
 
-        //public void Mutate(ConverterFunction func)
-        //{
-        //    WeigthsIH.Map(c => func(c));
-        //    WeigthsHO.Map(c => func(c));
-        //    BiasH.Map(c => func(c));
-        //    BiasO.Map(c => func(c));
-        //}
+        public void Mutate(ConverterFunction func)
+        {
+            foreach (Matrix<double> m in Weigths)
+            {
+                m.Map(c => func(c));
+            }
+
+            foreach (Matrix<double> m in Biases)
+            {
+                m.Map(c => func(c));
+            }
+        }
     }
 }
